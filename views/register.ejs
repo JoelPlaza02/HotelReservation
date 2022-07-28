@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register Page</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
+</head>
+<body>
+  <section class="register">
+    <form class="register-form">
+      <div class="error" style="background-color: red;"></div><br>
+      <header class="register-header">
+        <h1>Register</h1>
+      </header>
+      <hr>
+      <div class="personal-company-wrapper">
+        <div class="personal">
+            <i class="fa fa-check-circle circle-check"></i>
+            <p>Personal</p>
+        </div>
+        <div class="company">
+            <i class="fa-solid fa-circle circle"></i>
+            <p>Company</p>
+        </div>
+      </div>
+      <hr class="hr2">
+      <div class="username-wrapper">
+        <i class="fa-solid fa-user user-icon"></i>
+        <input type="text" id="username" placeholder="Username" required /><br />
+      </div>
+      <div class="password-wrapper">
+        <i class="fa-solid fa-unlock lock-icon"></i>
+        <input type="password" id="password" placeholder="Password" required><br>
+      </div>
+      <hr class="hr3">
+        <input type="submit" value="Register" class="register-btn"><br>
+        <a href="/login" class="register-login-link">Already registered? Login</a>
+    </form>
+  </section>
+
+  <script>
+    const form = document.querySelector('form')
+    const username = document.querySelector('#username')
+    const password = document.querySelector('#password')
+    const display = document.querySelector('.error')
+     form.addEventListener('submit', async (e) => {
+        e.preventDefault()
+        display.textContent = ''
+        try {
+          const res = await fetch('/api/auth/register', {
+            method: 'POST',
+            body: JSON.stringify({ username: username.value, password: password.value }),
+            headers: { 'Content-Type': 'application/json' }
+          })
+          const data = await res.json()
+          if(res.status === 400 || res.status === 401){
+           return display.textContent = `${data.message}. ${data.error ? data.error : ''}`
+          }
+          data.role === "admin" ? location.assign('/crowny-hotel') : location.assign('/crowny-hotel')
+          /*location.assign('/admin') : location.assign('/basic')*/
+        } catch (err) {
+          console.log(err.message)
+        }
+      })
+  </script>
+</body>
+</html>
