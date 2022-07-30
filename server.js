@@ -5,7 +5,7 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const { adminAuth, userAuth } = require("./middleware/auth.js");
 
-const PORT = process.env.PORT || 5000;
+const port = process.env.port || 5000;
 
 app.set("view engine", "ejs");
 app.set('views', './views');
@@ -35,8 +35,8 @@ app.get("/logout", (req, res) => {
 app.get("/basic", userAuth, (req, res) => res.render("user"));
 
 
-const server = app.listen(PORT, () =>
-  console.log(`Server Connected to port ${PORT}`)
+const server = app.listen(port, () =>
+  console.log(`Server Connected to port ${port}`)
 );
 
 process.on("unhandledRejection", (err) => {
